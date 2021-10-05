@@ -36,11 +36,30 @@
 
     <!-- Resolución -->
     <div class="result">
-      <p></p>
+      <p v-if="showCorrectAnswer == true">👍</p>
+      <p v-if="showCorrectAnswer == false">
+        👎 La respuesta correcta es
+        {{ questions[this.numberQuestion].correctAnswer }}
+      </p>
     </div>
-    <button @click="next" :disabled="blockButtonNext">
+
+    <!-- Siguiente -->
+    <button 
+    v-if="answered.length != 2"
+    class="btn btn-info" 
+    @click="nextButton" 
+    :disabled="blockButtonNext">
       Siguiente
     </button>
+
+    <router-link
+      v-if="answered.length == 2"
+      :disabled="blockButtonNext"
+      to="/results"
+      class="btn btn-info"
+    >
+      Finalizar
+    </router-link>
   </div>
 </template>
 
@@ -51,8 +70,9 @@ export default {
   data() {
     return {
       test: "test",
-      NextbuttonBlock: true,
-      AnswersbuttonBlock: false,
+      nextbuttonBlock: true,
+      answersbuttonBlock: false,
+      showCorrectAnswer: null,
       numberQuestion: 0,
       answered: [],
       questions: [
@@ -80,30 +100,31 @@ export default {
         e.target.value !== this.questions[this.numberQuestion].correctAnswer
       ) {
         this.answered.push(e.target.value);
-        this.NextbuttonBlock = false;
-        this.AnswersbuttonBlock = true
+        this.nextbuttonBlock = false;
+        this.answersbuttonBlock = true;
+        this.showCorrectAnswer = false;
       } else {
         this.answered.push(e.target.value);
-        this.NextbuttonBlock = false;
-        this.AnswersbuttonBlock = true
-
+        this.nextbuttonBlock = false;
+        this.answersbuttonBlock = true;
+        this.showCorrectAnswer = true;
       }
     },
 
-    // TESTS
-    next() {
+    nextButton() {
       this.numberQuestion++;
-        this.NextbuttonBlock = true;
-        this.AnswersbuttonBlock = false;
+      this.nextbuttonBlock = true;
+      this.answersbuttonBlock = false;
+      this.showCorrectAnswer = null;
     },
   },
 
   computed: {
     blockButtonNext() {
-      return this.NextbuttonBlock ? true : false;
+      return this.nextbuttonBlock ? true : false;
     },
     blockButtonAsnwers() {
-      return this.AnswersbuttonBlock ? true : false;
+      return this.answersbuttonBlock ? true : false;
     },
   },
 };
