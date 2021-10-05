@@ -1,6 +1,7 @@
 <template>
   <div class="container">
-    <h1>{{ questions[this.numberQuestion].question }}</h1>
+    <h1>Pregunta: {{ questions[this.numberQuestion].numberQuestion }}</h1>
+    <h2>{{ questions[this.numberQuestion].question }}</h2>
 
     <div class="possibleAnswers d-flex flex-column">
       <!-- Repuesta 1 -->
@@ -44,26 +45,42 @@
     </div>
 
     <!-- Siguiente -->
-    <button 
-    v-if="answered.length != 2"
-    class="btn btn-info" 
-    @click="nextButton" 
-    :disabled="blockButtonNext">
+    <button
+      v-if="answered.length != questions.length"
+      class="btn btn-info"
+      @click="nextButton"
+      :disabled="blockButtonNext"
+    >
       Siguiente
     </button>
 
     <router-link
-      v-if="answered.length == 2"
+      v-if="answered.length == questions.length"
       :disabled="blockButtonNext"
       to="/results"
       class="btn btn-info"
     >
       Finalizar
     </router-link>
+    <p>{{ answered }}</p>
+    <hr />
+    <div class="progress">
+      <div
+        class="progress-bar"
+        role="progressbar"
+        :style="{ width: (this.answered.length/this.questions.length) * 100  + '%'}"
+        aria-valuenow="100"
+        aria-valuemin="0"
+        aria-valuemax="100"
+      >
+        {{ (this.answered.length/this.questions.length) * 100 }}%
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   name: "Questions",
 
@@ -74,23 +91,6 @@ export default {
       answersbuttonBlock: false,
       showCorrectAnswer: null,
       numberQuestion: 0,
-      answered: [],
-      questions: [
-        {
-          question: "Pregunta1",
-          answer1: "Respuesta 1",
-          answer2: "Respuesta 2",
-          answer3: "Respuesta 3",
-          correctAnswer: "Respuesta 3",
-        },
-        {
-          question: "Pregunta2",
-          answer1: "Respuesta 11",
-          answer2: "Respuesta 22",
-          answer3: "Respuesta 33",
-          correctAnswer: "Respuesta 22",
-        },
-      ],
     };
   },
 
@@ -126,6 +126,7 @@ export default {
     blockButtonAsnwers() {
       return this.answersbuttonBlock ? true : false;
     },
+    ...mapState(["answered", "questions", "userName"]),
   },
 };
 </script>
