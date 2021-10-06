@@ -3,7 +3,10 @@
     <h1>Pregunta: {{ questions[this.numberQuestion].numberQuestion }}</h1>
     <h2>{{ questions[this.numberQuestion].question }}</h2>
 
-    <div class="possibleAnswers d-flex flex-column">
+    <div
+      v-if="questions[this.numberQuestion].type == 'buttonOptions'"
+      class="possibleAnswers d-flex flex-column"
+    >
       <!-- Repuesta 1 -->
       <button
         @click="checkAnswer"
@@ -35,24 +38,37 @@
       </button>
     </div>
 
+    <div v-else>
+      <div class="input-group mb-3">
+        <input
+          :disabled="clickedAcceptF"
+          v-model="answerTextBox"
+          type="text"
+          class="form-control"
+          placeholder="Responde..."
+          aria-label="Responde..."
+          aria-describedby="button-addon2"
+        />
+        <button
+          :disabled="blockButtonTextBox"
+          @click="checkAnswerTextBox"
+          class="btn btn-outline-secondary"
+          type="button"
+          id="button-addon2"
+        >
+          Aceptar
+        </button>
+      </div>
+    </div>
+
     <!-- Resolución -->
-    <div class="result">
+    <div class="result fs-3">
       <p v-if="showCorrectAnswer == true">👍</p>
       <p v-if="showCorrectAnswer == false">
         👎 La respuesta correcta es
         {{ questions[this.numberQuestion].correctAnswer }}
       </p>
     </div>
-
-    <!-- Siguiente -->
-    <button
-      v-if="answered.length != questions.length"
-      class="btn btn-info"
-      @click="nextButton"
-      :disabled="blockButtonNext"
-    >
-      Siguiente
-    </button>
 
     <router-link
       v-if="answered.length == questions.length"
@@ -63,7 +79,16 @@
       Finalizar
     </router-link>
   </div>
-  <p>{{ answered }}</p>
+  <hr />
+  <!-- Siguiente -->
+  <button
+    v-if="answered.length != questions.length"
+    class="btn btn-info"
+    @click="nextButton"
+    :disabled="blockButtonNext"
+  >
+    Siguiente
+  </button>
   <hr />
   <div class="progress">
     <div
@@ -93,6 +118,9 @@ export default {
       answersbuttonBlock: false,
       showCorrectAnswer: null,
       numberQuestion: 0,
+      answerTextBox: "",
+      buttonTextBox: true,
+      clickedAccept: false,
     };
   },
 
@@ -100,7 +128,6 @@ export default {
     checkAnswer(e) {
       // Reset transition
       let mainContainer = document.getElementById("main-container");
-      console.log(mainContainer);
       mainContainer.classList.remove("animate__fadeIn");
 
       if (
@@ -110,29 +137,46 @@ export default {
         this.nextbuttonBlock = false;
         this.answersbuttonBlock = true;
         this.showCorrectAnswer = false;
-        console.log(mainContainer);
         mainContainer.classList.remove("animate__fadeIn");
       } else {
         this.answered.push(e.target.value);
         this.nextbuttonBlock = false;
         this.answersbuttonBlock = true;
         this.showCorrectAnswer = true;
+        mainContainer.classList.remove("animate__fadeIn");
+      }
+    },
+    checkAnswerTextBox() {
+      let mainContainer = document.getElementById("main-container");
+      mainContainer.classList.remove("animate__fadeIn");
+      this.answered.push(this.answerTextBox);
+      this.nextbuttonBlock = false;
+      this.clickedAccept = true;
+      if (
+        this.questions[this.numberQuestion].correctAnswer !==
+        this.answered[this.numberQuestion].toLowerCase()
+      ) {
+        this.showCorrectAnswer = false;
+        mainContainer.classList.remove("animate__fadeIn");
+      } else {
+        this.showCorrectAnswer = true;
+        mainContainer.classList.remove("animate__fadeIn");
       }
     },
 
     nextButton() {
       // Reset transition
       let mainContainer = document.getElementById("main-container");
-      console.log(mainContainer);
       mainContainer.classList.add("animate__fadeIn");
 
       this.numberQuestion++;
       this.nextbuttonBlock = true;
       this.answersbuttonBlock = false;
+      this.clickedAccept = false;
+      this.answerTextBox = "";
       this.showCorrectAnswer = null;
     },
     ...mapActions(["cleanData"]),
-
   },
 
   computed: {
@@ -141,6 +185,14 @@ export default {
     },
     blockButtonAsnwers() {
       return this.answersbuttonBlock ? true : false;
+    },
+    blockButtonTextBox() {
+      return this.answerTextBox.trim() === "" || this.clickedAccept == true
+        ? true
+        : false;
+    },
+    clickedAcceptF() {
+      return this.clickedAccept ? true : false;
     },
     ...mapState(["answered", "questions", "userName"]),
   },

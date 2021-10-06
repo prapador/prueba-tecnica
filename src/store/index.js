@@ -7,62 +7,103 @@ export default createStore({
     questions: [
       {
         numberQuestion: "1",
-        question: "Pregunta1",
-        answer1: "Respuesta 1",
-        answer2: "Respuesta 2",
-        answer3: "Respuesta 3",
-        correctAnswer: "Respuesta 3",
+        question: "¿Alrededor de qué porcentaje de La Tierra está cubierta por agua antes de 'El Colapso'?",
+        answer1: "50%",
+        answer2: "70%",
+        answer3: "60%",
+        type: "buttonOptions",
+        correctAnswer: "70%",
       },
       {
         numberQuestion: "2",
-        question: "Pregunta2",
-        answer1: "Respuesta 11",
-        answer2: "Respuesta 22",
-        answer3: "Respuesta 33",
-        correctAnswer: "Respuesta 22",
+        question: "El proceso por el que una célula se divide para formar dos células hijas se llama:",
+        answer1: "Segregación",
+        answer2: "Mitosis",
+        answer3: "Meiosis",
+        type: "buttonOptions",
+        correctAnswer: "Mitosis",
       },
       {
-        numberQuestion: "2",
-        question: "Pregunta2",
-        answer1: "Respuesta 11",
-        answer2: "Respuesta 22",
-        answer3: "Respuesta 33",
-        correctAnswer: "Respuesta 22",
+        numberQuestion: "3",
+        question: "Para los botánicos, el tomate es una:",
+        type: 'textBox',
+        correctAnswer: "fruta",
       },
       {
-        numberQuestion: "2",
-        question: "Pregunta2",
-        answer1: "Respuesta 11",
-        answer2: "Respuesta 22",
-        answer3: "Respuesta 33",
-        correctAnswer: "Respuesta 22",
+        numberQuestion: "44",
+        question: "¿Por qué la cómoda se llama así, si la cama es mucho más cómoda?",
+        answer1: "Es un término que viene de la época antigua",
+        answer2: "Es un término que viene de la época moderna",
+        answer3: "No lo sé",
+        type: "buttonOptions",
+        correctAnswer: "No lo sé",
       },
       {
-        numberQuestion: "2",
-        question: "Pregunta2",
-        answer1: "Respuesta 11",
-        answer2: "Respuesta 22",
-        answer3: "Respuesta 33",
-        correctAnswer: "Respuesta 22",
+        numberQuestion: "5",
+        question: "¿cómo...se llásd%$90..........Not Found",
+        answer1: "Sí",
+        answer2: "No",
+        answer3: "404",
+        type: "buttonOptions",
+        correctAnswer: "404",
+      },
+      {
+        numberQuestion: "6",
+        question: "Restaurando... ¿Cómo se llaman las partículas subatómicas con carga eléctrica negativa?",
+        type: 'textBox',
+        correctAnswer: "electrones",
+      },
+      {
+        numberQuestion: "7",
+        question: "¿Qué inventó Alfred Nobel, el que da nombre a los famosos premios?",
+        answer1: "Dnamita",
+        answer2: "Penicilina",
+        answer3: "El agua",
+        type: "buttonOptions",
+        correctAnswer: "Dnamita",
+      },
+      {
+        numberQuestion: "8",
+        question: "¿Cuánto es la cuarta parte de la tercera parte?",
+        answer1: "Un doceavo",
+        answer2: "3/4 partes",
+        answer3: "Un séptcimo",
+        type: "buttonOptions",
+        correctAnswer: "Un doceavo",
+      },
+      {
+        numberQuestion: "9",
+        question: "¿Hay vida en otros planetas?",
+        type: 'textBox',
+        correctAnswer: "Ehhh...",
+      },
+      {
+        numberQuestion: "10",
+        question: "¿Seguro que eres humano?",
+        answer1: "Sí",
+        answer2: "Sí",
+        answer3: "Sí",
+        type: "buttonOptions",
+        correctAnswer: "Sí",
       },
     ],
   },
   mutations: {
     setUserName(state, payload) {
-      state.userName = payload
+      state.userName = payload;
     },
     cleanData(state) {
-      state.answered = []
-    }
+      state.answered = [];
+    },
   },
 
   actions: {
     setUserName({ commit }, name) {
-      commit("setUserName", name)
+      commit("setUserName", name);
     },
-    cleanData({commit}) {
-      commit('cleanData')
-    }
+    cleanData({ commit }) {
+      commit("cleanData");
+    },
   },
   modules: {},
 });

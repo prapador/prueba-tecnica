@@ -1,10 +1,10 @@
 <template>
-  <div class="home">
+  <div class="home animate__animated" id="main-home-container">
     <div class="header">
       <h1 class="line-1 anim-typewriter1">Loading system "Travel in time"</h1>
     </div>
 
-    <div class="main container">
+    <div class="container ">
       <div class="row">
         <div class="col-md-6 animate__animated animate__flash">
           <h2>Hola Humano,</h2>
@@ -20,7 +20,7 @@
         </div>
 
         <div
-          class="col-md-6 px-md-5 mt-5 mt-md-0 align-self-center animate__animated animate__flash"
+          class="col-md-6 mb-5 align-self-center animate__animated animate__flash"
         >
           <div class="mb-3">
             <label for="userName" class="d-block">Tu nombre, humano</label>
@@ -35,15 +35,14 @@
             />
           </div>
 
-          <router-link
-            @click="acceptUserName(userName)"
-            :class="{ disabled: disabledButtonVamos }"
-            :disabled="true"
-            to="/questions"
-            class="btn btn-success"
-          >
-            Vamos
-          </router-link>
+            <button
+              @click="acceptUserName(userName)"
+              class="btn btn-success"
+              :disabled="disabledButtonVamos"
+            >
+              Vamos
+            </button>
+
         </div>
       </div>
     </div>
@@ -52,6 +51,8 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
+import router from "@/router/index.js";
+
 export default {
   name: "Home",
   components: {},
@@ -65,6 +66,13 @@ export default {
   methods: {
     ...mapActions(["setUserName", "cleanData"]),
     acceptUserName() {
+      function waitZoom() {
+        router.push("/questions");
+      }
+
+      setTimeout(waitZoom, 1000);
+      let mainHomeContainer = document.getElementById("main-home-container");
+      mainHomeContainer.classList.add("animate__zoomOut");
       this.setUserName(this.userName);
     },
   },
@@ -83,16 +91,7 @@ export default {
 </script>
 
 <style lang="scss">
-:root {
-  --animate-duration: 800ms;
-  --animate-delay: 3s;
-}
-
-.disabled {
-  opacity: 0.5;
-  pointer-events: none;
-}
-
+@import "../assets/scss/main";
 .header {
   height: 14rem;
   display: flex;
@@ -104,6 +103,9 @@ export default {
   border-right: 2px solid rgba(255, 255, 255, 0.75);
   white-space: nowrap;
   overflow: hidden;
+  @include rwd(medium) {
+    font-size: 1.1rem;
+  }
 }
 
 /* Animation */
