@@ -21,17 +21,47 @@ export default createStore({
         answer3: "Respuesta 33",
         correctAnswer: "Respuesta 22",
       },
+      {
+        numberQuestion: "2",
+        question: "Pregunta2",
+        answer1: "Respuesta 11",
+        answer2: "Respuesta 22",
+        answer3: "Respuesta 33",
+        correctAnswer: "Respuesta 22",
+      },
+      {
+        numberQuestion: "2",
+        question: "Pregunta2",
+        answer1: "Respuesta 11",
+        answer2: "Respuesta 22",
+        answer3: "Respuesta 33",
+        correctAnswer: "Respuesta 22",
+      },
+      {
+        numberQuestion: "2",
+        question: "Pregunta2",
+        answer1: "Respuesta 11",
+        answer2: "Respuesta 22",
+        answer3: "Respuesta 33",
+        correctAnswer: "Respuesta 22",
+      },
     ],
   },
   mutations: {
     setUserName(state, payload) {
       state.userName = payload
+    },
+    cleanData(state) {
+      state.answered = []
     }
   },
 
   actions: {
     setUserName({ commit }, name) {
       commit("setUserName", name)
+    },
+    cleanData({commit}) {
+      commit('cleanData')
     }
   },
   modules: {},

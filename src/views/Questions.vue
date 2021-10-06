@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container animate__animated animate__fadeIn" id="main-container">
     <h1>Pregunta: {{ questions[this.numberQuestion].numberQuestion }}</h1>
     <h2>{{ questions[this.numberQuestion].question }}</h2>
 
@@ -62,25 +62,27 @@
     >
       Finalizar
     </router-link>
-    <p>{{ answered }}</p>
-    <hr />
-    <div class="progress">
-      <div
-        class="progress-bar"
-        role="progressbar"
-        :style="{ width: (this.answered.length/this.questions.length) * 100  + '%'}"
-        aria-valuenow="100"
-        aria-valuemin="0"
-        aria-valuemax="100"
-      >
-        {{ (this.answered.length/this.questions.length) * 100 }}%
-      </div>
+  </div>
+  <p>{{ answered }}</p>
+  <hr />
+  <div class="progress">
+    <div
+      class="progress-bar"
+      role="progressbar"
+      :style="{
+        width: (this.answered.length / this.questions.length) * 100 + '%',
+      }"
+      aria-valuenow="100"
+      aria-valuemin="0"
+      aria-valuemax="100"
+    >
+      {{ (this.answered.length / this.questions.length) * 100 }}%
     </div>
   </div>
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 export default {
   name: "Questions",
 
@@ -96,6 +98,11 @@ export default {
 
   methods: {
     checkAnswer(e) {
+      // Reset transition
+      let mainContainer = document.getElementById("main-container");
+      console.log(mainContainer);
+      mainContainer.classList.remove("animate__fadeIn");
+
       if (
         e.target.value !== this.questions[this.numberQuestion].correctAnswer
       ) {
@@ -103,6 +110,8 @@ export default {
         this.nextbuttonBlock = false;
         this.answersbuttonBlock = true;
         this.showCorrectAnswer = false;
+        console.log(mainContainer);
+        mainContainer.classList.remove("animate__fadeIn");
       } else {
         this.answered.push(e.target.value);
         this.nextbuttonBlock = false;
@@ -112,11 +121,18 @@ export default {
     },
 
     nextButton() {
+      // Reset transition
+      let mainContainer = document.getElementById("main-container");
+      console.log(mainContainer);
+      mainContainer.classList.add("animate__fadeIn");
+
       this.numberQuestion++;
       this.nextbuttonBlock = true;
       this.answersbuttonBlock = false;
       this.showCorrectAnswer = null;
     },
+    ...mapActions(["cleanData"]),
+
   },
 
   computed: {
@@ -127,6 +143,10 @@ export default {
       return this.answersbuttonBlock ? true : false;
     },
     ...mapState(["answered", "questions", "userName"]),
+  },
+
+  created() {
+    this.cleanData();
   },
 };
 </script>

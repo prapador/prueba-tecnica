@@ -1,6 +1,6 @@
 <template>
+  <div class="resultsList container animate__animated animate__flipInX">
   <h1>Resultados</h1>
-  <div class="resultsList container">
     <ol class="list-group list-group-numbered">
       <li
         v-for="(item, i) in answered"
